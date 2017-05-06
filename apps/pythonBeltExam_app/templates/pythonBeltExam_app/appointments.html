@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>success</title>
+    </head>
+    <body>
+        <style>
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            form {
+                border: 1px solid black;
+                padding: 10px;
+                display: inline-block;
+                vertical-align: top;
+            }
+        </style>
+        <a href="/logout">Logout</a>
+        <h1>Welcome, {{request.session.user_fname}}, {{request.session.user_id}}</h1>
+        <h2>Add Appointment</h2>
+        {% for message in messages %}
+            <p><b>{{message}}</b></p>
+        {% endfor %}
+        <form action="/add_appointment" method="post">
+            {% csrf_token %}
+            <label for="appt_date">
+                Date:<input type="date" name="appt_date">
+            </label>
+            <label for="appt_time">
+            Time:<input type="time" name="appt_time">
+            </label>
+            <label for="appt_task">
+            Task:<input type="text" name="appt_task">
+            </label>
+            <button>Add</button>
+        </form>
+        <h3>Here are your appointments for today, {{request.session.today}}:</h3>
+        <table border = 1>
+            <tr>
+                <th>Tasks</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for appointment in today_appts %}
+            <tr>
+                <td>{{appointment.task}}</td>
+                <td>{{appointment.time}}</td>
+                <td>{{appointment.status}}</td>
+                <td><a href="/appointments/{{appointment.id}}">Edit</a> <a href="/appointments/{{appointment.id}}/delete">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h3>Your Other Appointments:</h3>
+        <table border = 1>
+            <tr>
+                <th>Tasks</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            {% for appointment in other_appts %}
+            <tr>
+                <td>{{appointment.task}}</td>
+                <td>{{appointment.date}}</td>
+                <td>{{appointment.time}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

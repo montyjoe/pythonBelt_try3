@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Update</title>
+    </head>
+    <body>
+        <style>
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            form {
+                border: 1px solid black;
+                padding: 10px;
+                display: inline-block;
+                vertical-align: top;
+            }
+        </style>
+        <a href="/appointments">Dashboard</a>
+        <a href="/logout">Logout</a>
+        <h2>Update Appointment</h2>
+        {% for message in messages %}
+            <p><b>{{message}}</b></p>
+        {% endfor %}
+        {% for appointment in this_appt%}
+            <form action="/update" method="post">
+                {% csrf_token %}
+                <label for="update_task">
+                    Task:<input type="text" value="{{appointment.task}}" name="update_task">
+                </label>
+                <label for="update_status">
+                    Status:<select value="{{appointment.status}}" name="update_status">
+                        <option value="Done">Done</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Missed">Missed</option>
+                    </select>
+                </label>
+                <label for="update_date">
+                    Date:<input type="date" value="{{appointment.date}}" name="update_date">
+                </label>
+                <label for="update_time">
+                    Time:<input type="time" value="{{appointment.time}}" name="update_time">
+                </label>
+                <button>Update</button>
+            </form>
+        {% endfor %}
+    </body>
+</html>
